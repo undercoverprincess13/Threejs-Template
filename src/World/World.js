@@ -12,6 +12,7 @@ class World {
     #renderer;
     #loop;
     #resizer
+
     constructor (container) {
         this.#camera = createCamera();
         this.#renderer = createRenderer();
@@ -19,26 +20,31 @@ class World {
         this.#resizer = new Resizer(container, this.#camera, this.#renderer);
         this.#loop = new Loop(this.#camera, this.#scene, this.#renderer);
 
+        this.#scene.add(this.#camera);
+
         const controls = new OrbitControls(this.#camera, this.#renderer.domElement);
         controls.tick = () => controls.update();
 
         container.append(this.#renderer.domElement);
 
+
         const cube = createExampleCube();
         this.#scene.add(cube);
+
+        this.#loop.updatables.push(controls, cube);
     }
 
-    render() {
+    render () {
         this.#renderer.render(this.#scene, this.#camera);
     }
 
-    start() {
+    start () {
         this.#loop.start();
     }
 
-    stop() {
+    stop () {
         this.#loop.stop();
     }
 }
 
-export { World };
+export {World};
